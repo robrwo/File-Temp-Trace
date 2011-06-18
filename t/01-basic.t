@@ -34,7 +34,7 @@ sub f4 {
     ok($tmp->isa("File::Temp::Trace"), "isa");
 
     my $dir = $tmp->dir;
-    diag("dir=${dir}");
+    # diag("dir=${dir}");
 
     ok(-d $dir, "created directory");
     ok($dir eq "${tmp}", "stringify");
@@ -61,7 +61,7 @@ sub f4 {
     my $fh3 = f3($tmp);
     my $fn3 = $fh3->filename;
     ok(-e $fn3, "tempfile3 exists");
-    diag($fn3);
+    # diag($fn3);
     ok($fn3 =~ /${dir}\/UNKNOWN-.{8}$/, "expected filename");
 
     # TODO test content of log
