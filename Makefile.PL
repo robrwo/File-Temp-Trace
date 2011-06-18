@@ -14,6 +14,7 @@ WriteMakefile(
     PREREQ_PM => {
 	'Attribute::Handlers' => 0,
 	'Carp' => 0,
+	'File::Spec' => 0,
 	'File::Temp' => 0,
 	'IO::File' => 0,
 	'overload'   => 0,
