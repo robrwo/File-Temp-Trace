@@ -68,6 +68,8 @@ sub _name_to_template {
 
 =item dir
 
+=item log
+
 =back
 
 =cut
