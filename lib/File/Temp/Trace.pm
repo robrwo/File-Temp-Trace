@@ -39,7 +39,7 @@ use Attribute::Handlers;
 use Carp qw( longmess );
 use File::Path qw( make_path );
 use File::Spec;
-use File::Temp;
+use File::Temp ();
 use Scalar::Util qw( refaddr );
 
 BEGIN {
@@ -67,8 +67,6 @@ sub _name_to_template {
 =item cleanup
 
 =item template
-
-=item tmpdir
 
 =item dir
 
@@ -100,6 +98,12 @@ sub new {
 
 =head2 dir
 
+=head2 tmpdir
+
+  $dir = $tmp->tmpdir;
+
+This is an alias of L</dir>.
+
 =cut
 
 sub dir {
@@ -107,6 +111,12 @@ sub dir {
 }
 
 =head2 log
+
+=head2 tmplog
+
+  $fh = $tmp->tmplog;
+
+This is an alias of L</log>.
 
 =cut
 
@@ -129,6 +139,12 @@ sub log {
 =item dir
 
 =back
+
+=head2 tmpfile
+
+  $fh = tmpfile(%options);
+
+This is an alias of L</file>.
 
 =cut
 
@@ -167,6 +183,12 @@ sub file {
 	}
     }
     return $fh;
+}
+
+BEGIN{
+    *tmpdir = \&dir;
+    *tmplog = \&log;
+    *tmpfile = \&file;
 }
 
 =head1 SEE ALSO
