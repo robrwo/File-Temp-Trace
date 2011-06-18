@@ -1,0 +1,72 @@
+NAME
+    File::Temp::Trace - Trace the creation of temporary files
+
+VERSION
+    Version 0.01
+
+SYNPOSIS
+DESCRIPTION
+    This module allows you to trace the creation of temporary files. By
+    default, files are all created in the same directory, and files are
+    prefixed by the name of the function or method that created them.
+
+    You can optionally log the creation of temporary files with a stack
+    trace as well.
+
+  new
+    cleanup
+    template
+    tmpdir
+    dir
+
+  dir
+  log
+  file
+    unlink
+    suffix
+    exlock
+    log
+
+SEE ALSO
+    File::Temp
+
+AUTHOR
+    Robert Rothenberg, "<rrwo@cpan.org>"
+
+BUGS
+    Please report any bugs or feature requests to
+    "bug-file-temp-trace@rt.cpan.org", or through the web interface at
+    <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=File-Temp-Trace>.
+
+SUPPORT
+    You can find documentation for this module with the perldoc command.
+
+        perldoc File::Temp::Trace
+
+    You can also look for information at:
+
+    *   RT: CPAN's request tracker
+
+        <http://rt.cpan.org/NoAuth/Bugs.html?Dist=File-Temp-Trace>
+
+    *   AnnoCPAN: Annotated CPAN documentation
+
+        <http://annocpan.org/dist/File-Temp-Trace>
+
+    *   CPAN Ratings
+
+        <http://cpanratings.perl.org/d/File-Temp-Trace>
+
+    *   Search CPAN
+
+        <http://search.cpan.org/dist/File-Temp-Trace/>
+
+LICENSE AND COPYRIGHT
+    Copyright 2011 Robert Rothenberg.
+
+    This program is free software; you can redistribute it and/or modify it
+    under the terms of either: the GNU General Public License as published
+    by the Free Software Foundation; or the Artistic License.
+
+    See http://dev.perl.org/licenses/ for more information.
+
