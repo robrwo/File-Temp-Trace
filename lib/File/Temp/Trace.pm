@@ -35,6 +35,7 @@ use overload
 
 use Attribute::Handlers;
 use Carp qw( longmess );
+use File::Path qw( make_path );
 use File::Spec;
 use File::Temp;
 use Scalar::Util qw( refaddr );
@@ -147,6 +148,7 @@ sub file {
 
     if (exists $opts{dir}) {
 	$ftopts{DIR} = File::Spec->catfile(File::Spec->splitdir($self->dir), File::Spec->splitdir($opts{dir}));
+	make_path($ftopts{DIR});
     }
 
     my $fh = File::Temp->new(%ftopts);
