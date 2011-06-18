@@ -62,15 +62,40 @@ sub _name_to_template {
 
 =head2 new
 
+  $tmp = File::Temp::Trace->new(%options);
+
+Creates a new temporary directory and returns a blessed reference to
+the name of that temporary directory.
+
+The following options may be used:
+
 =over
 
 =item cleanup
 
+Delete the directory and contents once the object is
+destroyed. True by default.
+
 =item template
+
+A template for the name of directory. By default, it is
+C<File-Temp-Trace-XXXXXXXX>, where C<XXXXXXXX> is a unique string.
+
+The template name must end with at least C<XXXX>.
 
 =item dir
 
+The parent directory of the temporary directory. By default, it is in
+the system temporary directory.
+
 =item log
+
+Create a log file that gives the time that a temporary file was
+created, and a L<Carp::longmess> stack trace of the calling methods
+that created it.
+
+Note that if L</cleanup> is true, then the log file will be deleted
+when the object is destroyed.
 
 =back
 
@@ -98,6 +123,15 @@ sub new {
 
 =head2 dir
 
+  $dir = $tmp->dir;
+
+Returns the path of the temporary directory used by the object.
+
+Note that the object is overloaded for stringification to return the
+path.   That is,
+
+  "${tmp}" eq $tmp->dir;
+
 =head2 tmpdir
 
   $dir = $tmp->tmpdir;
@@ -111,6 +145,11 @@ sub dir {
 }
 
 =head2 log
+
+  $fh = $tmp->log;
+
+Returns the filehandle of the log file, or C<undef> if the C<log>
+option was not specified in the constructor.
 
 =head2 tmplog
 
@@ -126,17 +165,76 @@ sub log {
 
 =head2 file
 
+  $fh = $tmp->file(%options);
+
+Creates a new temporary file in L</dir>, and returns a filehandle.
+
+Note that unlike the corresponding method in L<File::Temp>, it does
+not also return a filename.  To obtain a filename, use
+
+  $fh->filename
+
+The file is created using L<File::Temp>, so other methods from
+L<File::Temp> may be used to query or manipulate the file.
+
+The name of the file is of the form C<CALLER-XXXXXXXX> (plus any
+suffix, if given as an option---see below), where C<CALLER> is the
+name of the function of method that called L</file> and C<XXXXXXXX> is
+a unique string.  This helps with debugging by making it easier to
+identify which temporary file in L</dir> was created by a particular
+method.
+
+In the case where a single method or function is used to create a
+particular type of file, and is called by several other methods or
+functions, it can be tagged with the C<skip_temp> attribute, so that
+the name of the caller will come from further down the call stack. For
+example,
+
+  sub create_file : skip_temp {
+    ...
+  }
+
+  sub fun_a {
+    create_file(...);
+  }
+
+  sub fun_b {
+    create_file(...);
+  }
+
+In this case, the two temporary files will be labelled with C<fun_a>
+and C<fun_b> rather than both with C<create_file>.
+
+The following options may be used.
+
 =over
 
 =item unlink
 
+If set to true, delete the file when the filehandle is destroyed. This
+is set disabled by default, since the parent temporary directory is
+normally set to be deleted.
+
 =item suffix
+
+The suffix (or extension) of the file.
 
 =item exlock
 
+The exclusive lock flag. True by default.
+
 =item log
 
+Create a separate log file when this file is created. The log file has
+the same filename as the this file, plug the C<.log> suffix.
+
+(In theory this is unsafe, as it does not ensure that a file with the
+same name exists, though such a case in unlikely.)
+
 =item dir
+
+Create a subdirectory in the L</dir> directory, if it does not already
+exist, and put the temporary file in there.
 
 =back
 
