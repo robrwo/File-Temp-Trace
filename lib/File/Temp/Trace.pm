@@ -12,6 +12,8 @@ Version 0.01
 
 our $VERSION = '0.01';
 
+=head1 REQUIREMENTS
+
 =head1 SYNPOSIS
 
 =head1 DESCRIPTION
