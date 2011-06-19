@@ -13,13 +13,13 @@ use strict;
 
 sub f2 {
     my ($tmp) = @_;
-    my $fh = $tmp->file();
+    my $fh = $tmp->tempfile();
     return $fh;
 }
 
 sub f3: skip_temp {
     my ($tmp) = @_;
-    my $fh = $tmp->file();
+    my $fh = $tmp->tempfile();
     return $fh;
 }
 
@@ -30,19 +30,20 @@ sub f4 {
 
 
 {
-    my $tmp = new File::Temp::Trace( log => 1 );
+    my $tmp = File::Temp::Trace->tempdir( log => 1 );
     ok($tmp->isa("File::Temp::Trace"), "isa");
 
-    my $dir = $tmp->dir;
+    my $dir = "$tmp";
     # diag("dir=${dir}");
 
     ok(-d $dir, "created directory");
-    ok($dir eq "${tmp}", "stringify");
 
-    my $lh = $tmp->log;
+    ok($dir eq $tmp->dir);
+
+    my $lh = $tmp->logfile;
     ok(-e $lh->filename, "logfile exists");
 
-    my $fh1 = $tmp->file();
+    my $fh1 = $tmp->tempfile();
     my $fn1 = $fh1->filename;
     ok(-e $fn1, "tempfile1 exists");
     #diag($fn1);

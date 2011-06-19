@@ -30,8 +30,9 @@ The following packages are required:
 =head1 DESCRIPTION
 
 This module allows you to trace the creation of temporary files. By
-default, files are all created in the same directory, and files are
-prefixed by the name of the function or method that created them.
+default, these files are all created in the same directory, and their
+names are prefixed by the name of the function or method that created
+them.
 
 You can optionally log the creation of temporary files with a stack
 trace as well.
@@ -71,9 +72,9 @@ sub _name_to_template {
     return "${name}-XXXXXXXX";
 }
 
-=head2 new
+=head2 tempdir
 
-  $tmp = File::Temp::Trace->new(%options);
+  $tmp = File::Temp::Trace->tempdir(%options);
 
 Creates a new temporary directory and returns a blessed reference to
 the name of that temporary directory.
@@ -112,7 +113,7 @@ when the object is destroyed.
 
 =cut
 
-sub new {
+sub tempdir {
     my $class = shift || __PACKAGE__;
 
     my %opts = @args;
@@ -134,20 +135,12 @@ sub new {
 
 =head2 dir
 
-  $dir = $tmp->dir;
+  $path = $tmp->dir;
 
-Returns the path of the temporary directory used by the object.
+The pathname of the temporary directory created by L</tempdir>.
 
-Note that the object is overloaded for stringification to return the
-path.   That is,
-
-  "${tmp}" eq $tmp->dir;
-
-=head2 tmpdir
-
-  $dir = $tmp->tmpdir;
-
-This is an alias of L</dir>.
+Note that the object is overloaded to return the pathname on
+stringification.
 
 =cut
 
@@ -155,22 +148,16 @@ sub dir {
     return ${$self};
 }
 
-=head2 log
+=head2 logfile
 
-  $fh = $tmp->log;
+  $fh = $tmp->logfile;
 
 Returns the filehandle of the log file, or C<undef> if the C<log>
 option was not specified in the constructor.
 
-=head2 tmplog
-
-  $fh = $tmp->tmplog;
-
-This is an alias of L</log>.
-
 =cut
 
-sub log {
+sub logfile {
     return $LogFiles{ refaddr $self };
 }
 
@@ -249,15 +236,15 @@ exist, and put the temporary file in there.
 
 =back
 
-=head2 tmpfile
+=head2 tempfile
 
-  $fh = tmpfile(%options);
+  $fh = tempfile(%options);
 
 This is an alias of L</file>.
 
 =cut
 
-sub file {
+sub tempfile {
     my $level = 1;
     my @frame = ( );
     my $name;
@@ -279,7 +266,7 @@ sub file {
     }
 
     my $fh = File::Temp->new(%ftopts);
-    if ((my $lh = $self->log) || ($opts{log})) {
+    if ((my $lh = $self->logfile) || ($opts{log})) {
 	my $ts  = sprintf("[%s]", (scalar gmtime()));
 	my $msg = sprintf("%s File %s created%s", $ts, $fh->filename, longmess());
 	$msg =~ s/\n(.)/\n$ts $1/g;
@@ -294,11 +281,6 @@ sub file {
     return $fh;
 }
 
-BEGIN{
-    *tmpdir = \&dir;
-    *tmplog = \&log;
-    *tmpfile = \&file;
-}
 
 =head1 SEE ALSO
 
