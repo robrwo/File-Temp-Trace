@@ -14,6 +14,17 @@ our $VERSION = '0.01';
 
 =head1 REQUIREMENTS
 
+The following packages are required:
+
+  Attribute::Handlers
+  Carp
+  File::Path
+  File::Spec
+  File::Temp
+  overload
+  Scalar::Util
+  self
+
 =head1 SYNPOSIS
 
 =head1 DESCRIPTION
