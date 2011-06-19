@@ -6,11 +6,13 @@ File::Temp::Trace - Trace the creation of temporary files
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
+
+=begin readme
 
 =head1 REQUIREMENTS
 
@@ -24,6 +26,8 @@ The following packages are required:
   overload
   Scalar::Util
   self
+
+=end readme
 
 =head1 SYNPOSIS
 
@@ -94,6 +98,10 @@ sub _name_to_template {
     $name = "UNKNOWN", if (($name eq "") || ($name eq "(eval)"));
     return "${name}-XXXXXXXX";
 }
+
+=for readme stop
+
+Methods are documented below:
 
 =head2 tempdir
 
@@ -304,6 +312,15 @@ sub tempfile {
     return $fh;
 }
 
+=begin readme
+
+=head1 REVISION HISTORY
+
+=for readme include file=Changes type=text
+
+=end readme
+
+=for readme continue
 
 =head1 SEE ALSO
 
@@ -312,6 +329,8 @@ L<File::Temp>
 =head1 AUTHOR
 
 Robert Rothenberg, C<< <rrwo@cpan.org> >>
+
+=for readme stop
 
 =head1 BUGS
 
@@ -345,7 +364,13 @@ L<http://cpanratings.perl.org/d/File-Temp-Trace>
 
 L<http://search.cpan.org/dist/File-Temp-Trace/>
 
+=item * GitHub
+
+L<https://github.com/robrwo/File-Temp-Trace>
+
 =back
+
+=for readme continue
 
 =head1 LICENSE AND COPYRIGHT
 
