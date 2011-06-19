@@ -17,7 +17,7 @@ sub f2 {
     return $fh;
 }
 
-sub f3: skip_temp {
+sub f3: skip_temp_log {
     my ($tmp) = @_;
     my $fh = $tmp->tempfile();
     return $fh;

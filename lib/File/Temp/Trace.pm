@@ -27,6 +27,29 @@ The following packages are required:
 
 =head1 SYNPOSIS
 
+    package MyPkg;
+
+    use File::Temp::Trace;
+
+    my $tmp = File::Temp::Trace->tempdir();
+
+    print STDERR "New temporary directory ${tmp} created.";
+
+    sub create_file : skip_temp_log {
+	my ($tmp, $ext) = @_;
+	return $tmp->tempfile( suffix => $ext );
+    }
+
+    sub create_text {
+	my ($tmp, $ext) = @_;
+	return create_file($tmp, '.txt');
+    }
+
+    my $fh = create_text($tmp);
+
+    # $fh->filename will be named "MyPkg-create_text-XXXXXXXX.txt",
+    # where XXXXXXXX is a unique string.
+
 =head1 DESCRIPTION
 
 This module allows you to trace the creation of temporary files. By
@@ -58,7 +81,7 @@ BEGIN {
     %File::Temp::Trace::SkipName = ( );
 }
 
-sub UNIVERSAL::skip_temp : ATTR(CODE) {
+sub UNIVERSAL::skip_temp_log : ATTR(CODE) {
   my ($pkg, $sym, $ref, $attr, $data) = @_;
   $File::Temp::Trace::SkipName{substr($$sym,1)} = $data;
 }
@@ -184,11 +207,11 @@ method.
 
 In the case where a single method or function is used to create a
 particular type of file, and is called by several other methods or
-functions, it can be tagged with the C<skip_temp> attribute, so that
+functions, it can be tagged with the C<skip_temp_log> attribute, so that
 the name of the caller will come from further down the call stack. For
 example,
 
-  sub create_file : skip_temp {
+  sub create_file : skip_temp_log {
     ...
   }
 
