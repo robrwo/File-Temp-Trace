@@ -196,7 +196,7 @@ sub logfile {
 
   $fh = $tmp->file(%options);
 
-Creates a new temporary file in L</dir>, and returns a filehandle.
+Creates a new temporary file in L</tempdir>, and returns a filehandle.
 
 Note that unlike the corresponding method in L<File::Temp>, it does
 not also return a filename.  To obtain a filename, use
@@ -210,7 +210,7 @@ The name of the file is of the form C<CALLER-XXXXXXXX> (plus any
 suffix, if given as an option---see below), where C<CALLER> is the
 name of the function of method that called L</file> and C<XXXXXXXX> is
 a unique string.  This helps with debugging by making it easier to
-identify which temporary file in L</dir> was created by a particular
+identify which temporary file in L</tempdir> was created by a particular
 method.
 
 In the case where a single method or function is used to create a
@@ -262,7 +262,7 @@ same name exists, though such a case in unlikely.)
 
 =item dir
 
-Create a subdirectory in the L</dir> directory, if it does not already
+Create a subdirectory in the L</tempdir> directory, if it does not already
 exist, and put the temporary file in there.
 
 =back
