@@ -1,13 +1,12 @@
 #!perl -T
 
-package main;
-
 use Test::More tests => 13;
 
 BEGIN {
     use_ok( 'File::Temp::Trace' ) || print "Bail out!
 ";
 }
+
 
 use strict;
 
@@ -47,7 +46,7 @@ sub f4 {
     my $fn1 = $fh1->filename;
     ok(-e $fn1, "tempfile1 exists");
     #diag($fn1);
-    ok($fn1 =~ /${dir}\/UNKNOWN-.{8}$/, "expected filename");
+    like($fn1, qr/${dir}\/UNKNOWN-.{8}$/, "expected filename");
 
     # TODO test content of log
 
@@ -55,7 +54,7 @@ sub f4 {
     my $fn2 = $fh2->filename;
     ok(-e $fn2, "tempfile2 exists");
     # diag($fn2);
-    ok($fn2 =~ /${dir}\/main-f2-.{8}$/, "expected filename");
+    like($fn2, qr/${dir}\/main-f2-.{8}$/, "expected filename");
 
     # TODO test content of log
 
@@ -63,7 +62,7 @@ sub f4 {
     my $fn3 = $fh3->filename;
     ok(-e $fn3, "tempfile3 exists");
     # diag($fn3);
-    ok($fn3 =~ /${dir}\/UNKNOWN-.{8}$/, "expected filename");
+    like($fn3, qr/${dir}\/UNKNOWN-.{8}$/, "expected filename");
 
     # TODO test content of log
 
@@ -71,8 +70,12 @@ sub f4 {
     my $fn4 = $fh4->filename;
     ok(-e $fn4, "tempfile4 exists");
     # diag($fn4);
-    ok($fn4 =~ /${dir}\/main-f4-.{8}$/, "expected filename");
+    like($fn4, qr/${dir}\/main-f4-.{8}$/, "expected filename");
 
     # TODO test content of log
 
 }
+
+
+
+
