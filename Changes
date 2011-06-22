@@ -1,9 +1,19 @@
 Revision history for File-Temp-Trace
 
+0.03
+
+        Documented a known issue with attributes.
+
+        Removed BEGIN block and simplified variable initialisation.
+
+        Removed use of self module.
+
 0.02    Sun Jun 19 17:00:53 BST 2011
+
         Version ready for CPAN.
 
 0.01    Sat Jun 18 12:35:53 BST 2011
+
         Prototype version uploaded to github
 
 
