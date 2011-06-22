@@ -334,6 +334,14 @@ Please report any bugs or feature requests to
 C<bug-file-temp-trace@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=File-Temp-Trace>.
 
+The following are known issues:
+
+=over
+
+=item The C<skip_temp_log> attribute is sometimes ignored.
+
+=back
+
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
