@@ -20,7 +20,6 @@ WriteMakefile(
 	'IO::File' => 0,
 	'overload'   => 0,
 	'Scalar::Util' => 0,
-	'self' => 0,
         'Test::More' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },

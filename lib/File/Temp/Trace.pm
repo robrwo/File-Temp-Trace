@@ -69,8 +69,6 @@ trace as well.
 use strict;
 use warnings;
 
-use self;
-
 use overload
     '""' => \&dir;
 
@@ -81,13 +79,11 @@ use File::Spec;
 use File::Temp ();
 use Scalar::Util qw( refaddr );
 
-BEGIN {
-    %File::Temp::Trace::SkipName = ( );
-}
+our %SkipName;
 
-sub UNIVERSAL::skip_temp_log : ATTR(CODE) {
+sub UNIVERSAL::skip_temp_log :ATTR(CODE) {
   my ($pkg, $sym, $ref, $attr, $data) = @_;
-  $File::Temp::Trace::SkipName{substr($$sym,1)} = $data;
+  $SkipName{substr($$sym,1)} = $data;
 }
 
 my %LogFiles = ( );
@@ -146,15 +142,14 @@ when the object is destroyed.
 
 sub tempdir {
     my $class = shift || __PACKAGE__;
-
-    my %opts = @args;
+    my %opts = @_;
 
     my %ftopts = ( CLEANUP => 1, TEMPLATE => _name_to_template(__PACKAGE__), TMPDIR => 1 );
     foreach my $o (qw( cleanup template tmpdir dir )) {
 	$ftopts{ uc($o) } = $opts{$o}, if (exists $opts{$o});
     }
 
-    $self = \ File::Temp->newdir($ftopts{TEMPLATE}, %ftopts);
+    my $self = \ File::Temp->newdir($ftopts{TEMPLATE}, %ftopts);
     bless $self, $class;
 
     if ($opts{log}) {
@@ -176,6 +171,7 @@ stringification.
 =cut
 
 sub dir {
+    my ($self) = @_;
     return ${$self};
 }
 
@@ -189,6 +185,7 @@ option was not specified in the constructor.
 =cut
 
 sub logfile {
+    my ($self) = @_;
     return $LogFiles{ refaddr $self };
 }
 
@@ -276,6 +273,7 @@ This is an alias of L</file>.
 =cut
 
 sub tempfile {
+    my ($self, %opts) = @_;
     my $level = 1;
     my @frame = ( );
     my $name;
@@ -283,8 +281,6 @@ sub tempfile {
 	@frame = caller($level++);
 	$name   = $frame[3] || "";
     } while ($name && (exists $File::Temp::Trace::SkipName{$name}));
-
-    my %opts = @args;
 
     my %ftopts = ( UNLINK => 0, TEMPLATE => _name_to_template($name), DIR => $self->dir, EXLOCK => 1 );
     foreach my $o (qw( unlink suffix exlock )) {
